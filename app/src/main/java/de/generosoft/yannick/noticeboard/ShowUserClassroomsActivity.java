@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -17,6 +18,8 @@ import de.generosoft.yannick.noticeboard.classrooms.Classroom;
 import de.generosoft.yannick.noticeboard.classrooms.UserClassroomsRequest;
 import de.generosoft.yannick.noticeboard.messages.Message;
 import de.generosoft.yannick.noticeboard.messages.UserMessagesRequest;
+import de.generosoft.yannick.noticeboard.util.AfterTextChangedListener;
+import de.generosoft.yannick.noticeboard.util.StringFilter;
 
 public class ShowUserClassroomsActivity extends AppCompatActivity {
 
@@ -27,6 +30,7 @@ public class ShowUserClassroomsActivity extends AppCompatActivity {
     private ArrayAdapter<String> stringArrayAdapter;
     private UserClassroomsRequest userClassroomsRequest;
     private volatile boolean requesting = false;
+    private volatile String filter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +41,12 @@ public class ShowUserClassroomsActivity extends AppCompatActivity {
         strings = new ArrayList<>();
         stringArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, strings);
         listView.setAdapter(stringArrayAdapter);
+
+        final EditText editText = findViewById(R.id.editText);
+        editText.addTextChangedListener((AfterTextChangedListener) s -> {
+            filter = s.toString();
+            fillLayout();
+        });
 
         email = getIntent().getStringExtra("email");
         password = getIntent().getStringExtra("password");
@@ -61,19 +71,21 @@ public class ShowUserClassroomsActivity extends AppCompatActivity {
         refresh(null);
     }
 
-    private void fillLayout() {
+    private synchronized void fillLayout() {
         strings.clear();
         stringArrayAdapter.notifyDataSetChanged();
         // reverse the list so the message with the highest id is displayed as first element
         Collections.reverse(classrooms);
         for (final Classroom classroom : classrooms) {
             final String s = classroom.getClassroomName() + ": " + classroom.getLecturer();
-            strings.add(s);
+            if (StringFilter.filter(s, filter)) {
+                strings.add(s);
+            }
         }
         stringArrayAdapter.notifyDataSetChanged();
     }
 
-    public void refresh(View view) {
+    public synchronized void refresh(View view) {
         if (!requesting) {
             try {
                 requesting = true;

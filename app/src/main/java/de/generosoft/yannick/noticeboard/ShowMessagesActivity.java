@@ -2,8 +2,11 @@ package de.generosoft.yannick.noticeboard;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -15,6 +18,8 @@ import java.util.LinkedList;
 
 import de.generosoft.yannick.noticeboard.messages.Message;
 import de.generosoft.yannick.noticeboard.messages.UserMessagesRequest;
+import de.generosoft.yannick.noticeboard.util.AfterTextChangedListener;
+import de.generosoft.yannick.noticeboard.util.StringFilter;
 
 public class ShowMessagesActivity extends AppCompatActivity {
 
@@ -25,11 +30,18 @@ public class ShowMessagesActivity extends AppCompatActivity {
     private ArrayAdapter<String> stringArrayAdapter;
     private UserMessagesRequest userMessagesRequest;
     private volatile boolean requesting = false;
+    private volatile String filter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_messages_actitvity);
+
+        final EditText editText = findViewById(R.id.editText);
+        editText.addTextChangedListener((AfterTextChangedListener) s -> {
+            filter = s.toString();
+            fillLayout();
+        });
 
         final ListView listView = findViewById(R.id.list);
         strings = new ArrayList<>();
@@ -59,19 +71,21 @@ public class ShowMessagesActivity extends AppCompatActivity {
         refresh(null);
     }
 
-    private void fillLayout() {
+    private synchronized void fillLayout() {
         strings.clear();
         stringArrayAdapter.notifyDataSetChanged();
         // reverse the list so the message with the highest id is displayed as first element
         Collections.reverse(messages);
         for (final Message message : messages) {
             final String s = message.getClassroom() + ": " + message.getPayload();
-            strings.add(s);
+            if (StringFilter.filter(s, filter)) {
+                strings.add(s);
+            }
         }
         stringArrayAdapter.notifyDataSetChanged();
     }
 
-    public void refresh(View view) {
+    public synchronized void refresh(View view) {
         if (!requesting) {
             try {
                 requesting = true;
