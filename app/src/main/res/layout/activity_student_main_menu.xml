@@ -7,7 +7,8 @@
     tools:context=".StudentMainMenu">
 
     <Button
-        android:id="@+id/button"
+        android:onClick="showMyClassrooms"
+        android:id="@+id/my_classrooms"
         android:layout_width="337dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
@@ -18,10 +19,11 @@
         android:text="My Classrooms"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button3" />
+        app:layout_constraintTop_toBottomOf="@+id/show_messages" />
 
     <Button
-        android:id="@+id/button8"
+        android:onClick="showAllClassRooms"
+        android:id="@+id/all_classrooms"
         android:layout_width="337dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
@@ -32,10 +34,11 @@
         android:text="All Classrooms"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button" />
+        app:layout_constraintTop_toBottomOf="@+id/my_classrooms" />
 
     <Button
-        android:id="@+id/button3"
+        android:onClick="showMessages"
+        android:id="@+id/show_messages"
         android:layout_width="337dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
