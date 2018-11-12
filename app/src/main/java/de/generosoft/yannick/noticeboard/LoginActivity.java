@@ -193,9 +193,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     public Intent getIntentForRole(final String role) {
         Intent intent = null;
         if ("lecturer".equals(role)) {
-            intent = new Intent(this, LecturerMainMenu.class);
+//            intent = new Intent(this, LecturerMainMenu.class);
         } else if ("student".equals(role)) {
-            intent = new Intent(this, StudentMainMenu.class);
+            intent = new Intent(this, ShowMessagesActivity.class);
         }
         return intent;
     }

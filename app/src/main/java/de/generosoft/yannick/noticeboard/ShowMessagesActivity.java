@@ -1,9 +1,17 @@
 package de.generosoft.yannick.noticeboard;
 
+import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -19,9 +27,13 @@ import java.util.LinkedList;
 import de.generosoft.yannick.noticeboard.messages.Message;
 import de.generosoft.yannick.noticeboard.messages.UserMessagesRequest;
 import de.generosoft.yannick.noticeboard.util.AfterTextChangedListener;
+import de.generosoft.yannick.noticeboard.util.NavigationBarListener;
 import de.generosoft.yannick.noticeboard.util.StringFilter;
 
 public class ShowMessagesActivity extends AppCompatActivity {
+
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
 
     private String email;
     private String password;
@@ -37,6 +49,20 @@ public class ShowMessagesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_messages_actitvity);
 
+        drawerLayout = findViewById(R.id.drawerLayout);
+        navigationView = findViewById(R.id.nav_view);
+
+        email = getIntent().getStringExtra("email");
+        password = getIntent().getStringExtra("password");
+
+        final Toolbar toolbar = findViewById(R.id.toolbar_);
+        setSupportActionBar(toolbar);
+        final ActionBar actionbar = getSupportActionBar();
+        actionbar.setDisplayHomeAsUpEnabled(true);
+        actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
+        navigationView.setNavigationItemSelectedListener(new NavigationBarListener(email, password, getApplicationContext(), drawerLayout));
+
+
         final EditText editText = findViewById(R.id.editText);
         editText.addTextChangedListener((AfterTextChangedListener) s -> {
             filter = s.toString();
@@ -47,9 +73,6 @@ public class ShowMessagesActivity extends AppCompatActivity {
         strings = new ArrayList<>();
         stringArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, strings);
         listView.setAdapter(stringArrayAdapter);
-
-        email = getIntent().getStringExtra("email");
-        password = getIntent().getStringExtra("password");
 
         final UserMessagesRequest.Listener listener = new UserMessagesRequest.Listener() {
             @Override
@@ -96,5 +119,15 @@ public class ShowMessagesActivity extends AppCompatActivity {
                 toast.show();
             }
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                drawerLayout.openDrawer(GravityCompat.START);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

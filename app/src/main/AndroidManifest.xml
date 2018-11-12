@@ -24,9 +24,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AdminMainMenu" />
-        <activity android:name=".StudentMainMenu" />
-        <activity android:name=".LecturerMainMenu" />
         <activity android:name=".ShowMessagesActivity" />
         <activity android:name=".ShowUserClassroomsActivity"></activity>
     </application>
