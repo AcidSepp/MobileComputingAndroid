@@ -13,23 +13,25 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 
+import de.generosoft.yannick.noticeboard.classrooms.Classroom;
+import de.generosoft.yannick.noticeboard.classrooms.UserClassroomsRequest;
 import de.generosoft.yannick.noticeboard.messages.Message;
 import de.generosoft.yannick.noticeboard.messages.UserMessagesRequest;
 
-public class ShowMessagesActivity extends AppCompatActivity {
+public class ShowUserClassroomsActivity extends AppCompatActivity {
 
     private String email;
     private String password;
-    private LinkedList<Message> messages = new LinkedList<>();
+    private LinkedList<Classroom> classrooms = new LinkedList<>();
     private ArrayList<String> strings;
     private ArrayAdapter<String> stringArrayAdapter;
-    private UserMessagesRequest userMessagesRequest;
+    private UserClassroomsRequest userClassroomsRequest;
     private volatile boolean requesting = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_show_messages_actitvity);
+        setContentView(R.layout.activity_show_my_class_rooms);
 
         final ListView listView = findViewById(R.id.list);
         strings = new ArrayList<>();
@@ -39,11 +41,11 @@ public class ShowMessagesActivity extends AppCompatActivity {
         email = getIntent().getStringExtra("email");
         password = getIntent().getStringExtra("password");
 
-        final UserMessagesRequest.Listener listener = new UserMessagesRequest.Listener() {
+        final UserClassroomsRequest.Listener listener = new UserClassroomsRequest.Listener() {
             @Override
-            public void onSuccess(final LinkedList<Message> mes) {
-                messages.clear();
-                messages.addAll(mes);
+            public void onSuccess(final LinkedList<Classroom> rooms) {
+                classrooms.clear();
+                classrooms.addAll(rooms);
                 fillLayout();
                 requesting = false;
             }
@@ -55,7 +57,7 @@ public class ShowMessagesActivity extends AppCompatActivity {
                 requesting = false;
             }
         };
-        userMessagesRequest = new UserMessagesRequest(listener, this.getApplicationContext());
+        userClassroomsRequest = new UserClassroomsRequest(listener, this.getApplicationContext());
         refresh(null);
     }
 
@@ -63,9 +65,9 @@ public class ShowMessagesActivity extends AppCompatActivity {
         strings.clear();
         stringArrayAdapter.notifyDataSetChanged();
         // reverse the list so the message with the highest id is displayed as first element
-        Collections.reverse(messages);
-        for (final Message message : messages) {
-            final String s = message.getClassroom() + ": " + message.getPayload();
+        Collections.reverse(classrooms);
+        for (final Classroom classroom : classrooms) {
+            final String s = classroom.getClassroomName() + ": " + classroom.getLecturer();
             strings.add(s);
         }
         stringArrayAdapter.notifyDataSetChanged();
@@ -75,7 +77,7 @@ public class ShowMessagesActivity extends AppCompatActivity {
         if (!requesting) {
             try {
                 requesting = true;
-                userMessagesRequest.execute(email, password);
+                userClassroomsRequest.execute(email, password);
             } catch (JSONException e) {
                 e.printStackTrace();
                 Toast toast = Toast.makeText(getApplicationContext(), e.getClass().toString(), Toast.LENGTH_SHORT);

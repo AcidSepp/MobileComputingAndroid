@@ -29,6 +29,10 @@ public class StudentMainMenu extends AppCompatActivity {
     }
 
     public void showMyClassrooms(View view) {
+        final Intent intent = new Intent(this, ShowUserClassroomsActivity.class);
+        intent.putExtra("email", email);
+        intent.putExtra("password", password);
+        startActivity(intent);
     }
 
     public void showAllClassRooms(View view) {

@@ -17,17 +17,16 @@ import java.util.Collections;
 import java.util.LinkedList;
 
 import de.generosoft.yannick.noticeboard.R;
-import de.generosoft.yannick.noticeboard.login.LoginRequest;
 
-public class MessagesRequest {
+public class UserMessagesRequest {
 
     private final RequestQueue requestQueue;
-    private final MessagesRequest.Listener listener;
+    private final UserMessagesRequest.Listener listener;
     private final Response.Listener<JSONObject> responseListener;
     private final Response.ErrorListener errorListener;
     private final String url;
 
-    public MessagesRequest(final MessagesRequest.Listener listener, final Context context) {
+    public UserMessagesRequest(final UserMessagesRequest.Listener listener, final Context context) {
         url = context.getString(R.string.login_url) + "/messages";
         this.listener = listener;
         this.responseListener = new Response.Listener<JSONObject>() {

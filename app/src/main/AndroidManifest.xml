@@ -27,7 +27,8 @@
         <activity android:name=".AdminMainMenu" />
         <activity android:name=".StudentMainMenu" />
         <activity android:name=".LecturerMainMenu" />
-        <activity android:name=".ShowMessagesActivity"></activity>
+        <activity android:name=".ShowMessagesActivity" />
+        <activity android:name=".ShowUserClassroomsActivity"></activity>
     </application>
 
 </manifest>
