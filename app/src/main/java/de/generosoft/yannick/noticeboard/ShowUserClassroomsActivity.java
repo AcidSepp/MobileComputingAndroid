@@ -87,7 +87,12 @@ public class ShowUserClassroomsActivity extends AppCompatActivity {
             }
         };
         userClassroomsRequest = new UserClassroomsRequest(listener, this.getApplicationContext());
-        refresh(null);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        refresh(navigationView);
     }
 
     private synchronized void fillLayout() {

@@ -91,7 +91,12 @@ public class ShowMessagesActivity extends AppCompatActivity {
             }
         };
         userMessagesRequest = new UserMessagesRequest(listener, this.getApplicationContext());
-        refresh(null);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        refresh(navigationView);
     }
 
     private synchronized void fillLayout() {
