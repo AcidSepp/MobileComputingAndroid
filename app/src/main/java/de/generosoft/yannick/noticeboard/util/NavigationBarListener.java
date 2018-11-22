@@ -19,7 +19,7 @@ public class NavigationBarListener implements NavigationView.OnNavigationItemSel
     private final Context context;
     private final DrawerLayout drawerLayout;
 
-    public NavigationBarListener(String email, String password, Context context, DrawerLayout drawerLayout) {
+    public NavigationBarListener(final String email, final String password, final Context context, final DrawerLayout drawerLayout) {
         this.email = email;
         this.password = password;
         this.context = context;
@@ -39,12 +39,14 @@ public class NavigationBarListener implements NavigationView.OnNavigationItemSel
                 intent = new Intent(context, ShowMessagesActivity.class);
                 intent.putExtra("email", email);
                 intent.putExtra("password", password);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 context.startActivity(intent);
                 break;
             case R.id.navigation_drawer_my_classrooms:
                 intent = new Intent(context, ShowUserClassroomsActivity.class);
                 intent.putExtra("email", email);
                 intent.putExtra("password", password);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 context.startActivity(intent);
                 break;
             case R.id.navigation_all_classrooms:
