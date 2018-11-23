@@ -1,7 +1,5 @@
-package de.generosoft.yannick.noticeboard;
+package de.generosoft.yannick.noticeboard.classrooms;
 
-import android.content.Intent;
-import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -9,51 +7,53 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import org.json.JSONException;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 
-import de.generosoft.yannick.noticeboard.messages.Message;
-import de.generosoft.yannick.noticeboard.messages.UserMessagesRequest;
+import de.generosoft.yannick.noticeboard.R;
 import de.generosoft.yannick.noticeboard.util.AfterTextChangedListener;
 import de.generosoft.yannick.noticeboard.util.NavigationBarListener;
 import de.generosoft.yannick.noticeboard.util.StringFilter;
 
-public class ShowMessagesActivity extends AppCompatActivity {
-
-    private DrawerLayout drawerLayout;
-    private NavigationView navigationView;
+public class ClassroomsActivity extends AppCompatActivity {
 
     private String email;
     private String password;
-    private LinkedList<Message> messages = new LinkedList<>();
-    private ArrayList<String> strings;
-    private ArrayAdapter<String> stringArrayAdapter;
-    private UserMessagesRequest userMessagesRequest;
-    private volatile boolean requesting = false;
+
+    private LinkedList<Classroom> classrooms = new LinkedList<>();
+    private LinkedList<Classroom> shownClassrooms = new LinkedList<>();
+    private ClassroomAdapter classroomAdapter;
     private volatile String filter;
+
+    private ClassroomsRequest ClassroomsRequest;
+    private volatile boolean requesting = false;
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
+    private boolean showAllClassrooms;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_show_messages_actitvity);
-
-        drawerLayout = findViewById(R.id.drawerLayout);
-        navigationView = findViewById(R.id.nav_view);
+        setContentView(R.layout.activity_show_my_class_rooms);
 
         email = getIntent().getStringExtra("email");
         password = getIntent().getStringExtra("password");
+        showAllClassrooms = getIntent().getBooleanExtra("showAllClassrooms", false);
+
+        final ListView listView = findViewById(R.id.list);
+        classroomAdapter = new ClassroomAdapter(this.getApplicationContext(), shownClassrooms, email, password);
+        listView.setAdapter(classroomAdapter);
+
+        drawerLayout = findViewById(R.id.drawerLayout);
+        navigationView = findViewById(R.id.nav_view);
 
         final Toolbar toolbar = findViewById(R.id.toolbar_);
         setSupportActionBar(toolbar);
@@ -62,23 +62,17 @@ public class ShowMessagesActivity extends AppCompatActivity {
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
         navigationView.setNavigationItemSelectedListener(new NavigationBarListener(email, password, getApplicationContext(), drawerLayout));
 
-
         final EditText editText = findViewById(R.id.editText);
         editText.addTextChangedListener((AfterTextChangedListener) s -> {
             filter = s.toString();
             fillLayout();
         });
 
-        final ListView listView = findViewById(R.id.list);
-        strings = new ArrayList<>();
-        stringArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, strings);
-        listView.setAdapter(stringArrayAdapter);
-
-        final UserMessagesRequest.Listener listener = new UserMessagesRequest.Listener() {
+        final ClassroomsRequest.Listener listener = new ClassroomsRequest.Listener() {
             @Override
-            public void onSuccess(final LinkedList<Message> mes) {
-                messages.clear();
-                messages.addAll(mes);
+            public void onSuccess(final LinkedList<Classroom> rooms) {
+                ClassroomsActivity.this.classrooms.clear();
+                ClassroomsActivity.this.classrooms.addAll(rooms);
                 fillLayout();
                 requesting = false;
             }
@@ -90,7 +84,7 @@ public class ShowMessagesActivity extends AppCompatActivity {
                 requesting = false;
             }
         };
-        userMessagesRequest = new UserMessagesRequest(listener, this.getApplicationContext());
+        ClassroomsRequest = new ClassroomsRequest(listener, this.getApplicationContext(), showAllClassrooms);
     }
 
     @Override
@@ -100,25 +94,23 @@ public class ShowMessagesActivity extends AppCompatActivity {
     }
 
     private synchronized void fillLayout() {
-        strings.clear();
-        stringArrayAdapter.notifyDataSetChanged();
-        // reverse the list so the message with the highest id is displayed as first element
-        Collections.reverse(messages);
-        for (final Message message : messages) {
-            final String s = message.getClassroom() + ": " + message.getPayload();
+        shownClassrooms.clear();
+        classroomAdapter.notifyDataSetChanged();
+        for (final Classroom classroom : classrooms) {
+            final String s = classroom.getClassroomName() + ": " + classroom.getLecturer();
             if (StringFilter.filter(s, filter)) {
-                strings.add(s);
+                shownClassrooms.add(classroom);
             }
         }
-        stringArrayAdapter.notifyDataSetChanged();
+        classroomAdapter.notifyDataSetChanged();
     }
 
-    public synchronized void refresh(View view) {
+    public synchronized void refresh(final View view) {
         if (!requesting) {
             try {
                 requesting = true;
-                userMessagesRequest.execute(email, password);
-            } catch (JSONException e) {
+                ClassroomsRequest.execute(email, password);
+            } catch (final JSONException e) {
                 e.printStackTrace();
                 Toast toast = Toast.makeText(getApplicationContext(), e.getClass().toString(), Toast.LENGTH_SHORT);
                 toast.show();

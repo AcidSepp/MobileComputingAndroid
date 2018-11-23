@@ -9,8 +9,8 @@ import android.view.MenuItem;
 
 import de.generosoft.yannick.noticeboard.LoginActivity;
 import de.generosoft.yannick.noticeboard.R;
-import de.generosoft.yannick.noticeboard.ShowMessagesActivity;
-import de.generosoft.yannick.noticeboard.ShowUserClassroomsActivity;
+import de.generosoft.yannick.noticeboard.messages.ShowMessagesActivity;
+import de.generosoft.yannick.noticeboard.classrooms.ClassroomsActivity;
 
 public class NavigationBarListener implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -42,16 +42,21 @@ public class NavigationBarListener implements NavigationView.OnNavigationItemSel
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 context.startActivity(intent);
                 break;
-            case R.id.navigation_drawer_my_classrooms:
-                intent = new Intent(context, ShowUserClassroomsActivity.class);
+            case R.id.navigation_drawer_subscribed_classrooms:
+                intent = new Intent(context, ClassroomsActivity.class);
                 intent.putExtra("email", email);
                 intent.putExtra("password", password);
+                intent.putExtra("showAllClassrooms", false);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 context.startActivity(intent);
                 break;
             case R.id.navigation_all_classrooms:
-//                            intent = new Intent(getApplicationContext(), .class);
-//                            startActivity(intent);
+                intent = new Intent(context, ClassroomsActivity.class);
+                intent.putExtra("email", email);
+                intent.putExtra("password", password);
+                intent.putExtra("showAllClassrooms", true);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                context.startActivity(intent);
                 break;
             case R.id.navigation_logout:
                 intent = new Intent(context.getApplicationContext(), LoginActivity.class);

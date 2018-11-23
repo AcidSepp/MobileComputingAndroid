@@ -1,5 +1,7 @@
-package de.generosoft.yannick.noticeboard;
+package de.generosoft.yannick.noticeboard.messages;
 
+import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -7,6 +9,8 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -20,37 +24,37 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 
-import de.generosoft.yannick.noticeboard.classrooms.Classroom;
-import de.generosoft.yannick.noticeboard.classrooms.UserClassroomsRequest;
+import de.generosoft.yannick.noticeboard.R;
 import de.generosoft.yannick.noticeboard.messages.Message;
 import de.generosoft.yannick.noticeboard.messages.UserMessagesRequest;
 import de.generosoft.yannick.noticeboard.util.AfterTextChangedListener;
 import de.generosoft.yannick.noticeboard.util.NavigationBarListener;
 import de.generosoft.yannick.noticeboard.util.StringFilter;
 
-public class ShowUserClassroomsActivity extends AppCompatActivity {
+public class ShowMessagesActivity extends AppCompatActivity {
+
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
 
     private String email;
     private String password;
-    private LinkedList<Classroom> classrooms = new LinkedList<>();
+    private LinkedList<Message> messages = new LinkedList<>();
     private ArrayList<String> strings;
     private ArrayAdapter<String> stringArrayAdapter;
-    private UserClassroomsRequest userClassroomsRequest;
+    private UserMessagesRequest userMessagesRequest;
     private volatile boolean requesting = false;
     private volatile String filter;
-    private DrawerLayout drawerLayout;
-    private NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_show_my_class_rooms);
-
-        email = getIntent().getStringExtra("email");
-        password = getIntent().getStringExtra("password");
+        setContentView(R.layout.activity_show_messages_actitvity);
 
         drawerLayout = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.nav_view);
+
+        email = getIntent().getStringExtra("email");
+        password = getIntent().getStringExtra("password");
 
         final Toolbar toolbar = findViewById(R.id.toolbar_);
         setSupportActionBar(toolbar);
@@ -59,10 +63,6 @@ public class ShowUserClassroomsActivity extends AppCompatActivity {
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
         navigationView.setNavigationItemSelectedListener(new NavigationBarListener(email, password, getApplicationContext(), drawerLayout));
 
-        final ListView listView = findViewById(R.id.list);
-        strings = new ArrayList<>();
-        stringArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, strings);
-        listView.setAdapter(stringArrayAdapter);
 
         final EditText editText = findViewById(R.id.editText);
         editText.addTextChangedListener((AfterTextChangedListener) s -> {
@@ -70,11 +70,16 @@ public class ShowUserClassroomsActivity extends AppCompatActivity {
             fillLayout();
         });
 
-        final UserClassroomsRequest.Listener listener = new UserClassroomsRequest.Listener() {
+        final ListView listView = findViewById(R.id.list);
+        strings = new ArrayList<>();
+        stringArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, strings);
+        listView.setAdapter(stringArrayAdapter);
+
+        final UserMessagesRequest.Listener listener = new UserMessagesRequest.Listener() {
             @Override
-            public void onSuccess(final LinkedList<Classroom> rooms) {
-                classrooms.clear();
-                classrooms.addAll(rooms);
+            public void onSuccess(final LinkedList<Message> mes) {
+                messages.clear();
+                messages.addAll(mes);
                 fillLayout();
                 requesting = false;
             }
@@ -86,7 +91,7 @@ public class ShowUserClassroomsActivity extends AppCompatActivity {
                 requesting = false;
             }
         };
-        userClassroomsRequest = new UserClassroomsRequest(listener, this.getApplicationContext());
+        userMessagesRequest = new UserMessagesRequest(listener, this.getApplicationContext());
     }
 
     @Override
@@ -99,9 +104,9 @@ public class ShowUserClassroomsActivity extends AppCompatActivity {
         strings.clear();
         stringArrayAdapter.notifyDataSetChanged();
         // reverse the list so the message with the highest id is displayed as first element
-        Collections.reverse(classrooms);
-        for (final Classroom classroom : classrooms) {
-            final String s = classroom.getClassroomName() + ": " + classroom.getLecturer();
+        Collections.reverse(messages);
+        for (final Message message : messages) {
+            final String s = message.getClassroom() + ": " + message.getPayload();
             if (StringFilter.filter(s, filter)) {
                 strings.add(s);
             }
@@ -113,7 +118,7 @@ public class ShowUserClassroomsActivity extends AppCompatActivity {
         if (!requesting) {
             try {
                 requesting = true;
-                userClassroomsRequest.execute(email, password);
+                userMessagesRequest.execute(email, password);
             } catch (JSONException e) {
                 e.printStackTrace();
                 Toast toast = Toast.makeText(getApplicationContext(), e.getClass().toString(), Toast.LENGTH_SHORT);

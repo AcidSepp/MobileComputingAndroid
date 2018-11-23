@@ -4,10 +4,12 @@ public class Classroom implements Comparable<Classroom> {
 
     private final String classroomName;
     private final String lecturer;
+    private boolean subscribed;
 
-    public Classroom(final String classroomName, final String lecturer) {
+    public Classroom(final String classroomName, final String lecturer, final boolean subscribed) {
         this.classroomName = classroomName;
         this.lecturer = lecturer;
+        this.subscribed = subscribed;
     }
 
     public String getClassroomName() {
@@ -16,6 +18,18 @@ public class Classroom implements Comparable<Classroom> {
 
     public String getLecturer() {
         return lecturer;
+    }
+
+    public boolean isSubscribed() {
+        return subscribed;
+    }
+
+    public void unsubscribe() {
+        subscribed = false;
+    }
+
+    public void subscribe() {
+        subscribed = true;
     }
 
     @Override

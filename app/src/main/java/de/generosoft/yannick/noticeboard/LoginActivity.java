@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.generosoft.yannick.noticeboard.login.LoginRequest;
+import de.generosoft.yannick.noticeboard.messages.ShowMessagesActivity;
 
 import static android.Manifest.permission.READ_CONTACTS;
 

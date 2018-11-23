@@ -24,8 +24,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ShowMessagesActivity" />
-        <activity android:name=".ShowUserClassroomsActivity"></activity>
+        <activity android:name=".messages.ShowMessagesActivity" />
+        <activity android:name=".classrooms.ClassroomsActivity"></activity>
     </application>
 
 </manifest>

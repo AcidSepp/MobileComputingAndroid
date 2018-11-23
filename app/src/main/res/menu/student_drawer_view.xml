@@ -5,7 +5,7 @@
             android:icon="@drawable/ic_menu_black_24dp"
             android:title="@string/show_my_messages" />
         <item
-            android:id="@+id/navigation_drawer_my_classrooms"
+            android:id="@+id/navigation_drawer_subscribed_classrooms"
             android:icon="@drawable/ic_menu_black_24dp"
             android:title="@string/show_my_classrooms" />
         <item

@@ -5,7 +5,6 @@ import android.content.Context;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -17,19 +16,21 @@ import java.util.Collections;
 import java.util.LinkedList;
 
 import de.generosoft.yannick.noticeboard.R;
-import de.generosoft.yannick.noticeboard.messages.Message;
-import de.generosoft.yannick.noticeboard.messages.UserMessagesRequest;
 
-public class UserClassroomsRequest {
+public class ClassroomsRequest {
 
     private final RequestQueue requestQueue;
-    private final UserClassroomsRequest.Listener listener;
+    private final ClassroomsRequest.Listener listener;
     private final Response.Listener<JSONObject> responseListener;
     private final Response.ErrorListener errorListener;
     private final String url;
 
-    public UserClassroomsRequest(final UserClassroomsRequest.Listener listener, final Context context) {
-        url = context.getString(R.string.login_url) + "/classrooms";
+    public ClassroomsRequest(final ClassroomsRequest.Listener listener, final Context context, final boolean allClassrooms) {
+        if (allClassrooms) {
+            url = context.getString(R.string.login_url) + "/allClassrooms";
+        } else {
+            url = context.getString(R.string.login_url) + "/subscribedClassrooms";
+        }
         this.listener = listener;
         this.responseListener = response -> {
             try {
@@ -39,7 +40,8 @@ public class UserClassroomsRequest {
                     final JSONObject jsonObject = array.getJSONObject(i);
                     final String classroomName = jsonObject.getString("classroomName");
                     final String lecturer = jsonObject.getString("lecturer");
-                    final Classroom classroom = new Classroom(classroomName, lecturer);
+                    final boolean subscribed = jsonObject.getBoolean("subscribed");
+                    final Classroom classroom = new Classroom(classroomName, lecturer, subscribed);
                     classrooms.add(classroom);
                 }
                 Collections.sort(classrooms);
