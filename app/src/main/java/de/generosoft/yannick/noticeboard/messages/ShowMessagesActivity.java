@@ -64,6 +64,9 @@ public class ShowMessagesActivity extends AppCompatActivity {
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
         navigationView.setNavigationItemSelectedListener(new NavigationBarListener(email, password, getApplicationContext(), drawerLayout));
 
+        final View viewById = toolbar.findViewById(R.id.refreshButton);
+        viewById.setOnClickListener(this::refresh);
+
 
         final EditText editText = findViewById(R.id.editText);
         editText.addTextChangedListener((AfterTextChangedListener) s -> {
@@ -99,6 +102,7 @@ public class ShowMessagesActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         refresh(navigationView);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
 
     private synchronized void fillLayout() {
