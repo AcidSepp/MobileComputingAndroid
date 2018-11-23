@@ -20,4 +20,5 @@
     <string name="show_my_classrooms">My Classrooms</string>
     <string name="show_all_classrooms">All Classrooms</string>
     <string name="logout">logout</string>
+    <string name="filter">Filter</string>
 </resources>

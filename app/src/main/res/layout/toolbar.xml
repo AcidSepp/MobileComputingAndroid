@@ -9,4 +9,14 @@
     android:minHeight="?attr/actionBarSize"
     app:theme="@style/AppTheme"
     android:background="@color/colorPrimary">
+
+    <ImageButton
+        android:id="@+id/refreshButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:adjustViewBounds="false"
+        android:background="@color/none"
+        android:cropToPadding="false"
+        android:src="@drawable/ic_refresh_black_24dp" />
 </android.support.v7.widget.Toolbar>
