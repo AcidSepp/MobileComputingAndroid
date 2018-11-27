@@ -79,20 +79,17 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         loginRequest = new LoginRequest(listener, this.getApplicationContext());
 
         final Button mEmailSignInButton = findViewById(R.id.email_sign_in_button);
-        mEmailSignInButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!alreadyLoggingIn) {
-                    try {
-                        alreadyLoggingIn = true;
-                        email = emailView.getText().toString();
-                        password = passwordView.getText().toString();
-                        loginRequest.execute(email, password);
+        mEmailSignInButton.setOnClickListener(view -> {
+            if (!alreadyLoggingIn) {
+                try {
+                    alreadyLoggingIn = true;
+                    email = emailView.getText().toString();
+                    password = passwordView.getText().toString();
+                    loginRequest.execute(email, password);
 
-                    } catch (JSONException e) {
-                        alreadyLoggingIn = false;
-                        e.printStackTrace();
-                    }
+                } catch (JSONException e) {
+                    alreadyLoggingIn = false;
+                    e.printStackTrace();
                 }
             }
         });
