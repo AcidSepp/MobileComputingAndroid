@@ -27,9 +27,9 @@ public class ClassroomsRequest {
 
     public ClassroomsRequest(final ClassroomsRequest.Listener listener, final Context context, final boolean allClassrooms) {
         if (allClassrooms) {
-            url = context.getString(R.string.login_url) + "/allClassrooms";
+            url = context.getString(R.string.login_url) + "/classrooms/all";
         } else {
-            url = context.getString(R.string.login_url) + "/subscribedClassrooms";
+            url = context.getString(R.string.login_url) + "/classrooms/subscribed";
         }
         this.listener = listener;
         this.responseListener = response -> {

@@ -22,7 +22,7 @@ public class SubscribeRequest {
     private final String url;
 
     public SubscribeRequest(final SubscribeRequest.Listener listener, final Context context) {
-        url = context.getString(R.string.login_url) + "/subscribe";
+        url = context.getString(R.string.login_url) + "/classrooms/subscribe";
         this.listener = listener;
         this.responseListener = response -> listener.onSuccess();
 

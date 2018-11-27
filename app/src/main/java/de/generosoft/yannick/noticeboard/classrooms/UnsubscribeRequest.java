@@ -22,7 +22,7 @@ public class UnsubscribeRequest {
     private final String url;
 
     public UnsubscribeRequest(final UnsubscribeRequest.Listener listener, final Context context) {
-        url = context.getString(R.string.login_url) + "/unsubscribe";
+        url = context.getString(R.string.login_url) + "/classrooms/unsubscribe";
         this.listener = listener;
         this.responseListener = response -> listener.onSuccess();
 

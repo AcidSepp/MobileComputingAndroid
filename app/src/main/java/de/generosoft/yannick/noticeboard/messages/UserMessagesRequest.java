@@ -27,7 +27,7 @@ public class UserMessagesRequest {
     private final String url;
 
     public UserMessagesRequest(final UserMessagesRequest.Listener listener, final Context context) {
-        url = context.getString(R.string.login_url) + "/messages";
+        url = context.getString(R.string.login_url) + "/messages/student";
         this.listener = listener;
         this.responseListener = new Response.Listener<JSONObject>() {
 

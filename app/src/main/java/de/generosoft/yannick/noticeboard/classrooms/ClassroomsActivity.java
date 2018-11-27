@@ -38,7 +38,6 @@ public class ClassroomsActivity extends AppCompatActivity {
     private volatile boolean requesting = false;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
-    private boolean showAllClassrooms;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +46,7 @@ public class ClassroomsActivity extends AppCompatActivity {
 
         email = getIntent().getStringExtra("email");
         password = getIntent().getStringExtra("password");
-        showAllClassrooms = getIntent().getBooleanExtra("showAllClassrooms", false);
+        final boolean showAllClassrooms = getIntent().getBooleanExtra("showAllClassrooms", false);
 
         final ListView listView = findViewById(R.id.list);
         classroomAdapter = new ClassroomAdapter(this.getApplicationContext(), shownClassrooms, email, password);
