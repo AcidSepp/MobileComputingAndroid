@@ -16,7 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".LoginActivity"
+            android:name=".login.LoginActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,8 +24,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".messages.ShowMessagesActivity" />
-        <activity android:name=".classrooms.ClassroomsActivity"></activity>
+        <activity android:name=".student.messages.ShowMessagesActivity" />
+        <activity android:name=".student.classrooms.ClassroomsActivity"></activity>
     </application>
 
 </manifest>

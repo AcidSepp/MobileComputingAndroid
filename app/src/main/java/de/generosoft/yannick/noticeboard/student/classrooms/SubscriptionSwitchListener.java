@@ -1,4 +1,4 @@
-package de.generosoft.yannick.noticeboard.classrooms;
+package de.generosoft.yannick.noticeboard.student.classrooms;
 
 import android.view.View;
 import android.widget.CompoundButton;
@@ -7,6 +7,9 @@ import android.widget.Toast;
 import org.json.JSONException;
 
 import de.generosoft.yannick.noticeboard.R;
+import de.generosoft.yannick.noticeboard.rest.SubscribeRequest;
+import de.generosoft.yannick.noticeboard.rest.UnsubscribeRequest;
+import de.generosoft.yannick.noticeboard.rest.pojo.Classroom;
 
 public class SubscriptionSwitchListener implements  View.OnClickListener {
 

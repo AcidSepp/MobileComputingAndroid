@@ -1,4 +1,4 @@
-package de.generosoft.yannick.noticeboard.classrooms;
+package de.generosoft.yannick.noticeboard.rest;
 
 import android.content.Context;
 

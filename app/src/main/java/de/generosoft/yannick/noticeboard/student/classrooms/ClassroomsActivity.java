@@ -1,4 +1,4 @@
-package de.generosoft.yannick.noticeboard.classrooms;
+package de.generosoft.yannick.noticeboard.student.classrooms;
 
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -16,12 +16,13 @@ import android.widget.Toast;
 
 import org.json.JSONException;
 
-import java.util.Collections;
 import java.util.LinkedList;
 
 import de.generosoft.yannick.noticeboard.R;
+import de.generosoft.yannick.noticeboard.rest.StudentClassroomsRequest;
+import de.generosoft.yannick.noticeboard.rest.pojo.Classroom;
 import de.generosoft.yannick.noticeboard.util.AfterTextChangedListener;
-import de.generosoft.yannick.noticeboard.util.NavigationBarListener;
+import de.generosoft.yannick.noticeboard.student.NavigationBarListener;
 import de.generosoft.yannick.noticeboard.util.StringFilter;
 
 public class ClassroomsActivity extends AppCompatActivity {
@@ -34,7 +35,7 @@ public class ClassroomsActivity extends AppCompatActivity {
     private ClassroomAdapter classroomAdapter;
     private volatile String filter;
 
-    private ClassroomsRequest ClassroomsRequest;
+    private StudentClassroomsRequest StudentClassroomsRequest;
     private volatile boolean requesting = false;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
@@ -71,7 +72,7 @@ public class ClassroomsActivity extends AppCompatActivity {
             fillLayout();
         });
 
-        final ClassroomsRequest.Listener listener = new ClassroomsRequest.Listener() {
+        final StudentClassroomsRequest.Listener listener = new StudentClassroomsRequest.Listener() {
             @Override
             public void onSuccess(final LinkedList<Classroom> rooms) {
                 ClassroomsActivity.this.classrooms.clear();
@@ -87,7 +88,7 @@ public class ClassroomsActivity extends AppCompatActivity {
                 requesting = false;
             }
         };
-        ClassroomsRequest = new ClassroomsRequest(listener, this.getApplicationContext(), showAllClassrooms);
+        StudentClassroomsRequest = new StudentClassroomsRequest(listener, this.getApplicationContext(), showAllClassrooms);
     }
 
     @Override
@@ -113,7 +114,7 @@ public class ClassroomsActivity extends AppCompatActivity {
         if (!requesting) {
             try {
                 requesting = true;
-                ClassroomsRequest.execute(email, password);
+                StudentClassroomsRequest.execute(email, password);
             } catch (final JSONException e) {
                 e.printStackTrace();
                 Toast toast = Toast.makeText(getApplicationContext(), e.getClass().toString(), Toast.LENGTH_SHORT);

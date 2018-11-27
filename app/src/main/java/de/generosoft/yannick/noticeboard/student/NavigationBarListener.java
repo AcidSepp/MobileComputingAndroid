@@ -1,4 +1,4 @@
-package de.generosoft.yannick.noticeboard.util;
+package de.generosoft.yannick.noticeboard.student;
 
 import android.content.Context;
 import android.content.Intent;
@@ -7,10 +7,10 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.view.MenuItem;
 
-import de.generosoft.yannick.noticeboard.LoginActivity;
+import de.generosoft.yannick.noticeboard.login.LoginActivity;
 import de.generosoft.yannick.noticeboard.R;
-import de.generosoft.yannick.noticeboard.messages.ShowMessagesActivity;
-import de.generosoft.yannick.noticeboard.classrooms.ClassroomsActivity;
+import de.generosoft.yannick.noticeboard.student.messages.ShowMessagesActivity;
+import de.generosoft.yannick.noticeboard.student.classrooms.ClassroomsActivity;
 
 public class NavigationBarListener implements NavigationView.OnNavigationItemSelectedListener {
 

@@ -1,7 +1,5 @@
-package de.generosoft.yannick.noticeboard.messages;
+package de.generosoft.yannick.noticeboard.student.messages;
 
-import android.content.Intent;
-import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -9,8 +7,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -26,10 +22,9 @@ import java.util.Collections;
 import java.util.LinkedList;
 
 import de.generosoft.yannick.noticeboard.R;
-import de.generosoft.yannick.noticeboard.messages.Message;
-import de.generosoft.yannick.noticeboard.messages.UserMessagesRequest;
+import de.generosoft.yannick.noticeboard.rest.pojo.Message;
 import de.generosoft.yannick.noticeboard.util.AfterTextChangedListener;
-import de.generosoft.yannick.noticeboard.util.NavigationBarListener;
+import de.generosoft.yannick.noticeboard.student.NavigationBarListener;
 import de.generosoft.yannick.noticeboard.util.StringFilter;
 
 public class ShowMessagesActivity extends AppCompatActivity {

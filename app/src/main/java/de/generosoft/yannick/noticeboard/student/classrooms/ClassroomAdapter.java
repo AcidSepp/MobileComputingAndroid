@@ -1,4 +1,4 @@
-package de.generosoft.yannick.noticeboard.classrooms;
+package de.generosoft.yannick.noticeboard.student.classrooms;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -7,12 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.CompoundButton;
 import android.widget.Switch;
 
 import java.util.List;
 
 import de.generosoft.yannick.noticeboard.R;
+import de.generosoft.yannick.noticeboard.rest.pojo.Classroom;
 
 public class ClassroomAdapter extends ArrayAdapter<Classroom> {
 

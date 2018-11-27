@@ -1,4 +1,4 @@
-package de.generosoft.yannick.noticeboard.classrooms;
+package de.generosoft.yannick.noticeboard.rest;
 
 import android.content.Context;
 
@@ -16,16 +16,17 @@ import java.util.Collections;
 import java.util.LinkedList;
 
 import de.generosoft.yannick.noticeboard.R;
+import de.generosoft.yannick.noticeboard.rest.pojo.Classroom;
 
-public class ClassroomsRequest {
+public class StudentClassroomsRequest {
 
     private final RequestQueue requestQueue;
-    private final ClassroomsRequest.Listener listener;
+    private final StudentClassroomsRequest.Listener listener;
     private final Response.Listener<JSONObject> responseListener;
     private final Response.ErrorListener errorListener;
     private final String url;
 
-    public ClassroomsRequest(final ClassroomsRequest.Listener listener, final Context context, final boolean allClassrooms) {
+    public StudentClassroomsRequest(final StudentClassroomsRequest.Listener listener, final Context context, final boolean allClassrooms) {
         if (allClassrooms) {
             url = context.getString(R.string.login_url) + "/classrooms/all";
         } else {

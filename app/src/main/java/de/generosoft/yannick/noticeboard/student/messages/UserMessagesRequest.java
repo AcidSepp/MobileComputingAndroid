@@ -1,4 +1,4 @@
-package de.generosoft.yannick.noticeboard.messages;
+package de.generosoft.yannick.noticeboard.student.messages;
 
 import android.content.Context;
 
@@ -17,6 +17,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 
 import de.generosoft.yannick.noticeboard.R;
+import de.generosoft.yannick.noticeboard.rest.pojo.Message;
 
 public class UserMessagesRequest {
 

@@ -1,4 +1,4 @@
-package de.generosoft.yannick.noticeboard.messages;
+package de.generosoft.yannick.noticeboard.rest.pojo;
 
 public class Message implements Comparable<Message> {
 

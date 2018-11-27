@@ -1,4 +1,4 @@
-package de.generosoft.yannick.noticeboard;
+package de.generosoft.yannick.noticeboard.login;
 
 import android.annotation.TargetApi;
 import android.app.LoaderManager.LoaderCallbacks;
@@ -27,8 +27,9 @@ import org.json.JSONException;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.generosoft.yannick.noticeboard.login.LoginRequest;
-import de.generosoft.yannick.noticeboard.messages.ShowMessagesActivity;
+import de.generosoft.yannick.noticeboard.R;
+import de.generosoft.yannick.noticeboard.rest.LoginRequest;
+import de.generosoft.yannick.noticeboard.student.messages.ShowMessagesActivity;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
