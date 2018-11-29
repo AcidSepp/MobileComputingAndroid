@@ -13,20 +13,27 @@ import org.json.JSONObject;
 
 import de.generosoft.yannick.noticeboard.R;
 
-public class DeleteClassroomRequest {
+public class ClassroomRequest {
 
     private final RequestQueue requestQueue;
-    private final DeleteClassroomRequest.Listener listener;
+    private final ClassroomRequest.Listener listener;
     private final Response.Listener<JSONObject> responseListener;
     private final Response.ErrorListener errorListener;
     private final String url;
 
-    public DeleteClassroomRequest(final DeleteClassroomRequest.Listener listener, final Context context) {
-        url = context.getString(R.string.login_url) + "/classrooms/delete";
+
+    public static ClassroomRequest getDeleteRequest(final ClassroomRequest.Listener listener, final Context context) {
+        return new ClassroomRequest(listener, context, context.getString(R.string.login_url) + "/classrooms/delete");
+    }
+
+    public static ClassroomRequest getCreateRequest(final ClassroomRequest.Listener listener, final Context context) {
+        return new ClassroomRequest(listener, context, context.getString(R.string.login_url) + "/classrooms/create");
+    }
+
+    private ClassroomRequest(final ClassroomRequest.Listener listener, final Context context, final String url) {
+        this.url = url;
         this.listener = listener;
-        this.responseListener = response -> {
-                listener.onSuccess();
-        };
+        this.responseListener = response -> listener.onSuccess();
 
         errorListener = error -> {
             try {

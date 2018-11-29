@@ -2,6 +2,7 @@ package de.generosoft.yannick.noticeboard.roles.lecturer.classroom;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 
 import de.generosoft.yannick.noticeboard.R;
 

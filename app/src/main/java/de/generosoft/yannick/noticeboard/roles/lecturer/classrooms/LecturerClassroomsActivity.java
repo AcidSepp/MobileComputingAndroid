@@ -1,5 +1,8 @@
 package de.generosoft.yannick.noticeboard.roles.lecturer.classrooms;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -7,6 +10,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -19,6 +23,7 @@ import org.json.JSONException;
 import java.util.LinkedList;
 
 import de.generosoft.yannick.noticeboard.R;
+import de.generosoft.yannick.noticeboard.rest.ClassroomRequest;
 import de.generosoft.yannick.noticeboard.rest.ClassroomsRequest;
 import de.generosoft.yannick.noticeboard.rest.pojo.Classroom;
 import de.generosoft.yannick.noticeboard.util.AfterTextChangedListener;
@@ -88,6 +93,47 @@ public class LecturerClassroomsActivity extends AppCompatActivity {
             }
         };
         classroomsRequest = ClassroomsRequest.getLecturerClassroomsRequest(listener, this.getApplicationContext());
+
+        final FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(this::createClassroom);
+    }
+
+    private void createClassroom(final View view) {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Create Classroom");
+        builder.setMessage("Enter classroom name:");
+
+        final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        builder.setView(input);
+
+        final ClassroomRequest.Listener listener = new ClassroomRequest.Listener() {
+
+            @Override
+            public void onSuccess() {
+                final Toast deleted = Toast.makeText(getApplicationContext(), "created classroom", Toast.LENGTH_SHORT);
+                refresh(null);
+                deleted.show();
+            }
+
+            @Override
+            public void onFailure(final String message) {
+                final Toast failed = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT);
+                failed.show();
+            }
+        };
+        final ClassroomRequest classroomRequest = ClassroomRequest.getCreateRequest(listener, getApplicationContext());
+
+        builder.setPositiveButton("Create", (dialog, which) -> {
+            try {
+                classroomRequest.execute(email, password, input.getText().toString());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        });
+        builder.setNegativeButton("Cancel", null);
+
+        builder.show();
     }
 
     @Override
@@ -131,4 +177,5 @@ public class LecturerClassroomsActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
 }

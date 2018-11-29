@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,7 +17,7 @@ import org.json.JSONException;
 import java.util.List;
 
 import de.generosoft.yannick.noticeboard.R;
-import de.generosoft.yannick.noticeboard.rest.DeleteClassroomRequest;
+import de.generosoft.yannick.noticeboard.rest.ClassroomRequest;
 import de.generosoft.yannick.noticeboard.rest.pojo.Classroom;
 
 public class LecturerClassroomsAdapter extends ArrayAdapter<Classroom> {
@@ -53,7 +52,7 @@ public class LecturerClassroomsAdapter extends ArrayAdapter<Classroom> {
         textView.setText(classroom.getClassroomName());
 
         final ImageButton deleteButton = view.findViewById(R.id.deleteButton);
-        final DeleteClassroomRequest.Listener listener = new DeleteClassroomRequest.Listener() {
+        final ClassroomRequest.Listener listener = new ClassroomRequest.Listener() {
 
             @Override
             public void onSuccess() {
@@ -69,12 +68,12 @@ public class LecturerClassroomsAdapter extends ArrayAdapter<Classroom> {
             }
         };
 
-        final DeleteClassroomRequest deleteClassroomRequest = new DeleteClassroomRequest(listener, getContext());
+        final ClassroomRequest classroomRequest = ClassroomRequest.getDeleteRequest(listener, getContext());
         final DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
             switch (which){
                 case DialogInterface.BUTTON_POSITIVE:
                     try {
-                        deleteClassroomRequest.execute(email, password, classroom.getClassroomName());
+                        classroomRequest.execute(email, password, classroom.getClassroomName());
                     } catch (final JSONException e) {
                         e.printStackTrace();
                     }
