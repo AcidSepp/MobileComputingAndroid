@@ -9,6 +9,7 @@ import android.view.MenuItem;
 
 import de.generosoft.yannick.noticeboard.login.LoginActivity;
 import de.generosoft.yannick.noticeboard.R;
+import de.generosoft.yannick.noticeboard.roles.lecturer.classrooms.LecturerClassroomsActivity;
 import de.generosoft.yannick.noticeboard.roles.student.messages.ShowMessagesActivity;
 import de.generosoft.yannick.noticeboard.roles.student.classrooms.StudentClassroomsActivity;
 
@@ -59,7 +60,7 @@ public class NavigationBarListener implements NavigationView.OnNavigationItemSel
                 context.startActivity(intent);
                 break;
             case R.id.navigation_drawer_owned_classrooms:
-                intent = new Intent(context, StudentClassroomsActivity.class);
+                intent = new Intent(context, LecturerClassroomsActivity.class);
                 intent.putExtra("email", email);
                 intent.putExtra("password", password);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
