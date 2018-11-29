@@ -57,6 +57,13 @@ public class StudentClassroomsActivity extends AppCompatActivity {
         navigationView = findViewById(R.id.nav_view);
 
         final Toolbar toolbar = findViewById(R.id.toolbar_);
+
+        if (showAllClassrooms) {
+            toolbar.setTitle(R.string.show_all_classrooms);
+        } else {
+            toolbar.setTitle(R.string.show_my_classrooms);
+        }
+
         setSupportActionBar(toolbar);
         final ActionBar actionbar = getSupportActionBar();
         actionbar.setDisplayHomeAsUpEnabled(true);

@@ -53,6 +53,7 @@ public class ShowMessagesActivity extends AppCompatActivity {
         password = getIntent().getStringExtra("password");
 
         final Toolbar toolbar = findViewById(R.id.toolbar_);
+        toolbar.setTitle(R.string.show_my_messages);
         setSupportActionBar(toolbar);
         final ActionBar actionbar = getSupportActionBar();
         actionbar.setDisplayHomeAsUpEnabled(true);

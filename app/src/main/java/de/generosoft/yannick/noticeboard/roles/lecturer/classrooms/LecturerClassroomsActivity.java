@@ -55,6 +55,7 @@ public class LecturerClassroomsActivity extends AppCompatActivity {
         listView.setAdapter(classroomsAdapter);
 
         final Toolbar toolbar = findViewById(R.id.toolbar_);
+        toolbar.setTitle(R.string.show_my_classrooms);
         setSupportActionBar(toolbar);
         final ActionBar actionbar = getSupportActionBar();
         actionbar.setDisplayHomeAsUpEnabled(true);
