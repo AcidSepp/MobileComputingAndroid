@@ -1,4 +1,4 @@
-package de.generosoft.yannick.noticeboard.student.messages;
+package de.generosoft.yannick.noticeboard.roles.student.messages;
 
 import android.content.Context;
 

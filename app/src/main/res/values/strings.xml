@@ -13,12 +13,13 @@
         completions."
     </string>
     <string name="error_sign_in_failed">Login failed</string>
-    <string name="login_url">http://192.168.1.12:8080</string>
-    <string name="dummyMail">student@haw-landshut.de</string>
+    <string name="login_url">http://192.168.178.67:8080</string>
+    <string name="dummyStudentMail">student@haw-landshut.de</string>
     <string name="dummyPassword">password</string>
     <string name="show_my_messages">My Messages</string>
     <string name="show_my_classrooms">My Classrooms</string>
     <string name="show_all_classrooms">All Classrooms</string>
     <string name="logout">logout</string>
     <string name="filter">Filter</string>
+    <string name="dummyLecturerMail">lecturer@haw-landshut.de</string>
 </resources>

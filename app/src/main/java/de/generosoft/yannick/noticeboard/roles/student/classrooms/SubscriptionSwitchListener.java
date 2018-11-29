@@ -1,4 +1,4 @@
-package de.generosoft.yannick.noticeboard.student.classrooms;
+package de.generosoft.yannick.noticeboard.roles.student.classrooms;
 
 import android.view.View;
 import android.widget.CompoundButton;

@@ -18,20 +18,28 @@ import java.util.LinkedList;
 import de.generosoft.yannick.noticeboard.R;
 import de.generosoft.yannick.noticeboard.rest.pojo.Classroom;
 
-public class StudentClassroomsRequest {
+public class ClassroomsRequest {
 
     private final RequestQueue requestQueue;
-    private final StudentClassroomsRequest.Listener listener;
+    private final ClassroomsRequest.Listener listener;
     private final Response.Listener<JSONObject> responseListener;
     private final Response.ErrorListener errorListener;
     private final String url;
 
-    public StudentClassroomsRequest(final StudentClassroomsRequest.Listener listener, final Context context, final boolean allClassrooms) {
-        if (allClassrooms) {
-            url = context.getString(R.string.login_url) + "/classrooms/all";
-        } else {
-            url = context.getString(R.string.login_url) + "/classrooms/subscribed";
-        }
+    public static ClassroomsRequest getLecturerClassroomsRequest(final ClassroomsRequest.Listener listener, final Context context) {
+        return new ClassroomsRequest(listener, context, context.getString(R.string.login_url) + "/classrooms/owned");
+    }
+
+    public static ClassroomsRequest getStudentAllClassroomsRequest(final ClassroomsRequest.Listener listener, final Context context) {
+        return new ClassroomsRequest(listener, context, context.getString(R.string.login_url) + "/classrooms/all");
+    }
+
+    public static ClassroomsRequest getStudentSubscribedClassroomsRequest(final ClassroomsRequest.Listener listener, final Context context) {
+        return new ClassroomsRequest(listener, context, context.getString(R.string.login_url) + "/classrooms/subscribed");
+    }
+
+    private ClassroomsRequest(final ClassroomsRequest.Listener listener, final Context context, final String url) {
+        this.url = url;
         this.listener = listener;
         this.responseListener = response -> {
             try {

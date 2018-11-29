@@ -24,8 +24,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".student.messages.ShowMessagesActivity" />
-        <activity android:name=".student.classrooms.ClassroomsActivity"></activity>
+        <activity android:name=".roles.student.messages.ShowMessagesActivity" />
+        <activity android:name=".roles.student.classrooms.StudentClassroomsActivity" />
+        <activity android:name=".roles.lecturer.classrooms.LecturerClassroomsActivity" />
+        <activity android:name=".roles.lecturer.messages.LecturerPostMessagesActivity" />
+        <activity android:name=".roles.lecturer.classroom.LecturerClassroomActivity"></activity>
     </application>
 
 </manifest>

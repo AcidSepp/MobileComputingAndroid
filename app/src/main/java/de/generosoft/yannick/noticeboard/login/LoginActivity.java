@@ -1,6 +1,5 @@
 package de.generosoft.yannick.noticeboard.login;
 
-import android.annotation.TargetApi;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.CursorLoader;
 import android.content.Intent;
@@ -14,8 +13,6 @@ import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -29,7 +26,8 @@ import java.util.List;
 
 import de.generosoft.yannick.noticeboard.R;
 import de.generosoft.yannick.noticeboard.rest.LoginRequest;
-import de.generosoft.yannick.noticeboard.student.messages.ShowMessagesActivity;
+import de.generosoft.yannick.noticeboard.roles.lecturer.classrooms.LecturerClassroomsActivity;
+import de.generosoft.yannick.noticeboard.roles.student.messages.ShowMessagesActivity;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -54,7 +52,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         emailView = findViewById(R.id.email);
         passwordView = findViewById(R.id.password);
 
-        emailView.setText(R.string.dummyMail);
+        emailView.setText(R.string.dummyLecturerMail);
         passwordView.setText(R.string.dummyPassword);
 
         final LoginRequest.Listener listener = new LoginRequest.Listener() {
@@ -112,13 +110,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
         if (shouldShowRequestPermissionRationale(READ_CONTACTS)) {
             Snackbar.make(emailView, R.string.permission_rationale, Snackbar.LENGTH_INDEFINITE)
-                    .setAction(android.R.string.ok, new View.OnClickListener() {
-                        @Override
-                        @TargetApi(Build.VERSION_CODES.M)
-                        public void onClick(View v) {
-                            requestPermissions(new String[]{READ_CONTACTS}, REQUEST_READ_CONTACTS);
-                        }
-                    });
+                    .setAction(android.R.string.ok, v -> requestPermissions(new String[]{READ_CONTACTS}, REQUEST_READ_CONTACTS));
         } else {
             requestPermissions(new String[]{READ_CONTACTS}, REQUEST_READ_CONTACTS);
         }
@@ -192,7 +184,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     public Intent getIntentForRole(final String role) {
         Intent intent = null;
         if ("lecturer".equals(role)) {
-//            intent = new Intent(this, LecturerMainMenu.class);
+            intent = new Intent(this, LecturerClassroomsActivity.class);
         } else if ("student".equals(role)) {
             intent = new Intent(this, ShowMessagesActivity.class);
         }

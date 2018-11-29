@@ -1,4 +1,4 @@
-package de.generosoft.yannick.noticeboard.student.classrooms;
+package de.generosoft.yannick.noticeboard.roles.lecturer.classrooms;
 
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -19,42 +19,40 @@ import org.json.JSONException;
 import java.util.LinkedList;
 
 import de.generosoft.yannick.noticeboard.R;
-import de.generosoft.yannick.noticeboard.rest.StudentClassroomsRequest;
+import de.generosoft.yannick.noticeboard.rest.ClassroomsRequest;
 import de.generosoft.yannick.noticeboard.rest.pojo.Classroom;
 import de.generosoft.yannick.noticeboard.util.AfterTextChangedListener;
-import de.generosoft.yannick.noticeboard.student.NavigationBarListener;
+import de.generosoft.yannick.noticeboard.util.NavigationBarListener;
 import de.generosoft.yannick.noticeboard.util.StringFilter;
 
-public class ClassroomsActivity extends AppCompatActivity {
+public class LecturerClassroomsActivity extends AppCompatActivity {
 
     private String email;
     private String password;
 
-    private LinkedList<Classroom> classrooms = new LinkedList<>();
-    private LinkedList<Classroom> shownClassrooms = new LinkedList<>();
-    private ClassroomAdapter classroomAdapter;
-    private volatile String filter;
-
-    private StudentClassroomsRequest StudentClassroomsRequest;
-    private volatile boolean requesting = false;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
+    private String filter;
+    private boolean requesting;
+    private ClassroomsRequest classroomsRequest;
+    private LinkedList<Classroom> classrooms = new LinkedList<>();
+    private LinkedList<Classroom> shownClassrooms = new LinkedList<>();
+    private LecturerClassroomsAdapter classroomsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_show_my_class_rooms);
+        setContentView(R.layout.activity_lecturer_classrooms);
 
         email = getIntent().getStringExtra("email");
         password = getIntent().getStringExtra("password");
-        final boolean showAllClassrooms = getIntent().getBooleanExtra("showAllClassrooms", false);
-
-        final ListView listView = findViewById(R.id.list);
-        classroomAdapter = new ClassroomAdapter(this.getApplicationContext(), shownClassrooms, email, password);
-        listView.setAdapter(classroomAdapter);
 
         drawerLayout = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.nav_view);
+
+        final ListView listView = findViewById(R.id.list);
+        classroomsAdapter = new LecturerClassroomsAdapter(this, shownClassrooms, email, password);
+        listView.setAdapter(classroomsAdapter);
 
         final Toolbar toolbar = findViewById(R.id.toolbar_);
         setSupportActionBar(toolbar);
@@ -66,17 +64,17 @@ public class ClassroomsActivity extends AppCompatActivity {
         final View viewById = toolbar.findViewById(R.id.refreshButton);
         viewById.setOnClickListener(this::refresh);
 
-        final EditText editText = findViewById(R.id.editText);
-        editText.addTextChangedListener((AfterTextChangedListener) s -> {
+        final EditText filterText = findViewById(R.id.editText);
+        filterText.addTextChangedListener((AfterTextChangedListener) s -> {
             filter = s.toString();
             fillLayout();
         });
 
-        final StudentClassroomsRequest.Listener listener = new StudentClassroomsRequest.Listener() {
+        final ClassroomsRequest.Listener listener = new ClassroomsRequest.Listener() {
             @Override
             public void onSuccess(final LinkedList<Classroom> rooms) {
-                ClassroomsActivity.this.classrooms.clear();
-                ClassroomsActivity.this.classrooms.addAll(rooms);
+                classrooms.clear();
+                classrooms.addAll(rooms);
                 fillLayout();
                 requesting = false;
             }
@@ -88,7 +86,7 @@ public class ClassroomsActivity extends AppCompatActivity {
                 requesting = false;
             }
         };
-        StudentClassroomsRequest = new StudentClassroomsRequest(listener, this.getApplicationContext(), showAllClassrooms);
+        classroomsRequest = ClassroomsRequest.getLecturerClassroomsRequest(listener, this.getApplicationContext());
     }
 
     @Override
@@ -100,21 +98,21 @@ public class ClassroomsActivity extends AppCompatActivity {
 
     private synchronized void fillLayout() {
         shownClassrooms.clear();
-        classroomAdapter.notifyDataSetChanged();
+        classroomsAdapter.notifyDataSetChanged();
         for (final Classroom classroom : classrooms) {
             final String s = classroom.getClassroomName() + ": " + classroom.getLecturer();
             if (StringFilter.filter(s, filter)) {
                 shownClassrooms.add(classroom);
             }
         }
-        classroomAdapter.notifyDataSetChanged();
+        classroomsAdapter.notifyDataSetChanged();
     }
 
     public synchronized void refresh(final View view) {
         if (!requesting) {
             try {
                 requesting = true;
-                StudentClassroomsRequest.execute(email, password);
+                classroomsRequest.execute(email, password);
             } catch (final JSONException e) {
                 e.printStackTrace();
                 Toast toast = Toast.makeText(getApplicationContext(), e.getClass().toString(), Toast.LENGTH_SHORT);

@@ -1,4 +1,4 @@
-package de.generosoft.yannick.noticeboard.student.messages;
+package de.generosoft.yannick.noticeboard.roles.student.messages;
 
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -24,7 +24,7 @@ import java.util.LinkedList;
 import de.generosoft.yannick.noticeboard.R;
 import de.generosoft.yannick.noticeboard.rest.pojo.Message;
 import de.generosoft.yannick.noticeboard.util.AfterTextChangedListener;
-import de.generosoft.yannick.noticeboard.student.NavigationBarListener;
+import de.generosoft.yannick.noticeboard.util.NavigationBarListener;
 import de.generosoft.yannick.noticeboard.util.StringFilter;
 
 public class ShowMessagesActivity extends AppCompatActivity {
@@ -44,7 +44,7 @@ public class ShowMessagesActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_show_messages_actitvity);
+        setContentView(R.layout.activity_student_messsages);
 
         drawerLayout = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.nav_view);

@@ -1,0 +1,12 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/navigation_drawer_owned_classrooms"
+            android:icon="@drawable/ic_menu_black_24dp"
+            android:title="@string/show_my_classrooms" />
+        <item
+            android:id="@+id/navigation_logout"
+            android:icon="@drawable/ic_menu_black_24dp"
+            android:title="@string/logout" />
+    </group>
+</menu>

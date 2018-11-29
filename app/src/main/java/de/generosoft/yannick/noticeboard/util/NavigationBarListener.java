@@ -1,4 +1,4 @@
-package de.generosoft.yannick.noticeboard.student;
+package de.generosoft.yannick.noticeboard.util;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,8 +9,8 @@ import android.view.MenuItem;
 
 import de.generosoft.yannick.noticeboard.login.LoginActivity;
 import de.generosoft.yannick.noticeboard.R;
-import de.generosoft.yannick.noticeboard.student.messages.ShowMessagesActivity;
-import de.generosoft.yannick.noticeboard.student.classrooms.ClassroomsActivity;
+import de.generosoft.yannick.noticeboard.roles.student.messages.ShowMessagesActivity;
+import de.generosoft.yannick.noticeboard.roles.student.classrooms.StudentClassroomsActivity;
 
 public class NavigationBarListener implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -43,18 +43,25 @@ public class NavigationBarListener implements NavigationView.OnNavigationItemSel
                 context.startActivity(intent);
                 break;
             case R.id.navigation_drawer_subscribed_classrooms:
-                intent = new Intent(context, ClassroomsActivity.class);
+                intent = new Intent(context, StudentClassroomsActivity.class);
                 intent.putExtra("email", email);
                 intent.putExtra("password", password);
                 intent.putExtra("showAllClassrooms", false);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 context.startActivity(intent);
                 break;
-            case R.id.navigation_all_classrooms:
-                intent = new Intent(context, ClassroomsActivity.class);
+            case R.id.navigation_drawer_all_classrooms:
+                intent = new Intent(context, StudentClassroomsActivity.class);
                 intent.putExtra("email", email);
                 intent.putExtra("password", password);
                 intent.putExtra("showAllClassrooms", true);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                context.startActivity(intent);
+                break;
+            case R.id.navigation_drawer_owned_classrooms:
+                intent = new Intent(context, StudentClassroomsActivity.class);
+                intent.putExtra("email", email);
+                intent.putExtra("password", password);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 context.startActivity(intent);
                 break;

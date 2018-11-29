@@ -9,7 +9,7 @@
             android:icon="@drawable/ic_menu_black_24dp"
             android:title="@string/show_my_classrooms" />
         <item
-            android:id="@+id/navigation_all_classrooms"
+            android:id="@+id/navigation_drawer_all_classrooms"
             android:icon="@drawable/ic_menu_black_24dp"
             android:title="@string/show_all_classrooms" />
         <item

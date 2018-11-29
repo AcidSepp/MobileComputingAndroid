@@ -1,4 +1,4 @@
-package de.generosoft.yannick.noticeboard.student.classrooms;
+package de.generosoft.yannick.noticeboard.roles.student.classrooms;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -14,14 +14,14 @@ import java.util.List;
 import de.generosoft.yannick.noticeboard.R;
 import de.generosoft.yannick.noticeboard.rest.pojo.Classroom;
 
-public class ClassroomAdapter extends ArrayAdapter<Classroom> {
+public class StudentClassroomsAdapter extends ArrayAdapter<Classroom> {
 
     private Context context;
     private List<Classroom> classrooms;
     private String email;
     private String password;
 
-    public ClassroomAdapter(final Context context, final List<Classroom> classrooms, final String email, final String password) {
+    public StudentClassroomsAdapter(final Context context, final List<Classroom> classrooms, final String email, final String password) {
         super(context, R.layout.subscription_toogle_layout, classrooms);
         this.context = context;
         this.classrooms = classrooms;
