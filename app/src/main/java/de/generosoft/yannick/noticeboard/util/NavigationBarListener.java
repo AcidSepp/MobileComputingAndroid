@@ -34,7 +34,7 @@ public class NavigationBarListener implements NavigationView.OnNavigationItemSel
         // close drawer when item is tapped
         drawerLayout.closeDrawers();
         int id = menuItem.getItemId();
-        Intent intent;
+        final Intent intent;
         switch (id) {
             case R.id.navigation_drawer_my_messages:
                 intent = new Intent(context, ShowMessagesActivity.class);

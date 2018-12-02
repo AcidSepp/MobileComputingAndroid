@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 
 import de.generosoft.yannick.noticeboard.R;
+import de.generosoft.yannick.noticeboard.rest.UserMessagesRequest;
 import de.generosoft.yannick.noticeboard.rest.pojo.Message;
 import de.generosoft.yannick.noticeboard.util.AfterTextChangedListener;
 import de.generosoft.yannick.noticeboard.util.NavigationBarListener;

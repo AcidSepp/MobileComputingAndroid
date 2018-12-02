@@ -111,9 +111,9 @@ public class LecturerClassroomsActivity extends AppCompatActivity {
 
             @Override
             public void onSuccess() {
-                final Toast deleted = Toast.makeText(getApplicationContext(), "created classroom", Toast.LENGTH_SHORT);
+                final Toast created = Toast.makeText(getApplicationContext(), "created classroom", Toast.LENGTH_SHORT);
                 refresh(null);
-                deleted.show();
+                created.show();
             }
 
             @Override
@@ -122,11 +122,11 @@ public class LecturerClassroomsActivity extends AppCompatActivity {
                 failed.show();
             }
         };
-        final ClassroomRequest classroomRequest = ClassroomRequest.getCreateRequest(listener, getApplicationContext());
+        final ClassroomRequest createRequest = ClassroomRequest.getCreateRequest(listener, getApplicationContext());
 
         builder.setPositiveButton("Create", (dialog, which) -> {
             try {
-                classroomRequest.execute(email, password, input.getText().toString());
+                createRequest.execute(email, password, input.getText().toString());
             } catch (JSONException e) {
                 e.printStackTrace();
             }

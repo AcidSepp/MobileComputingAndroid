@@ -1,9 +1,9 @@
-package de.generosoft.yannick.noticeboard.roles.lecturer.classrooms;
+package de.generosoft.yannick.noticeboard.roles.lecturer.classroom;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,27 +15,28 @@ import android.widget.Toast;
 
 import org.json.JSONException;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import de.generosoft.yannick.noticeboard.R;
 import de.generosoft.yannick.noticeboard.rest.ClassroomRequest;
+import de.generosoft.yannick.noticeboard.rest.DeleteMessageRequest;
 import de.generosoft.yannick.noticeboard.rest.pojo.Classroom;
-import de.generosoft.yannick.noticeboard.roles.lecturer.classroom.LecturerClassroomActivity;
-import de.generosoft.yannick.noticeboard.roles.student.classrooms.StudentClassroomsActivity;
+import de.generosoft.yannick.noticeboard.rest.pojo.Message;
 
-public class LecturerClassroomsAdapter extends ArrayAdapter<Classroom> {
+public class LecturerMessagesAdapter extends ArrayAdapter<Message> {
 
-    private LecturerClassroomsActivity activity;
-    private List<Classroom> classrooms;
-    private String email;
-    private String password;
+    private final String email;
+    private final String password;
+    private final List<Message> messages;
+    private final LecturerClassroomActivity activity;
 
-    public LecturerClassroomsAdapter(final LecturerClassroomsActivity activity, final List<Classroom> classrooms, final String email, final String password) {
-        super(activity, R.layout.subscription_toogle_layout, classrooms);
-        this.activity = activity;
-        this.classrooms = classrooms;
+    public LecturerMessagesAdapter(final LecturerClassroomActivity activity, final List<Message> messages, final String email, final String password) {
+        super(activity.getApplicationContext(), 0, messages);
         this.email = email;
         this.password = password;
+        this.messages = messages;
+        this.activity = activity;
     }
 
     @SuppressLint("SetTextI18n")
@@ -49,22 +50,13 @@ public class LecturerClassroomsAdapter extends ArrayAdapter<Classroom> {
         } else {
             view = convertView;
         }
-
-        final Classroom classroom = classrooms.get(position);
-
-        view.setOnClickListener(v -> {
-            final Intent intent = new Intent(activity, LecturerClassroomActivity.class);
-            intent.putExtra("email", email);
-            intent.putExtra("password", password);
-            intent.putExtra("classroomName", classroom.getClassroomName());
-            activity.startActivity(intent);
-        });
+        final Message message= messages.get(position);
 
         final TextView textView = view.findViewById(R.id.textView);
-        textView.setText(classroom.getClassroomName());
+        textView.setText(message.getPayload());
 
         final ImageButton deleteButton = view.findViewById(R.id.deleteButton);
-        final ClassroomRequest.Listener listener = new ClassroomRequest.Listener() {
+        final DeleteMessageRequest.Listener listener = new DeleteMessageRequest.Listener() {
 
             @Override
             public void onSuccess() {
@@ -80,12 +72,12 @@ public class LecturerClassroomsAdapter extends ArrayAdapter<Classroom> {
             }
         };
 
-        final ClassroomRequest classroomRequest = ClassroomRequest.getDeleteRequest(listener, getContext());
+        final DeleteMessageRequest deleteRequest = DeleteMessageRequest.getRequest(listener, getContext());
         final DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
             switch (which){
                 case DialogInterface.BUTTON_POSITIVE:
                     try {
-                        classroomRequest.execute(email, password, classroom.getClassroomName());
+                        deleteRequest.execute(email, password, message.getId());
                     } catch (final JSONException e) {
                         e.printStackTrace();
                     }
@@ -97,15 +89,14 @@ public class LecturerClassroomsAdapter extends ArrayAdapter<Classroom> {
             }
         };
 
-        final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 
         deleteButton.setOnClickListener(v -> {
-            builder.setMessage("Are you sure to delete classroom \"" + classroom.getClassroomName() + "\"?").setPositiveButton("Yes", dialogClickListener)
-                    .setNegativeButton("No", dialogClickListener).show();
+            builder.setMessage("Are you sure to delete message?").setPositiveButton("Yes", dialogClickListener)
+                    .setNegativeButton("No", dialogClickListener);
+            builder.show();
         });
 
         return view;
     }
-
-
 }
