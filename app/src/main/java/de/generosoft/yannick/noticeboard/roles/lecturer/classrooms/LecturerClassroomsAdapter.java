@@ -42,13 +42,21 @@ public class LecturerClassroomsAdapter extends ArrayAdapter<Classroom> {
     @NonNull
     @Override
     public View getView(final int position, final View convertView, @NonNull final ViewGroup parent) {
-        View view;
-        if (convertView == null) {
+        if (classrooms.isEmpty()) {
             final LayoutInflater layoutInflater = LayoutInflater.from(activity);
-            view = layoutInflater.inflate(R.layout.classroom_deletion_layout, null);
+            final View view = layoutInflater.inflate(R.layout.classroom_list_empty_layout, null);
+            final TextView textView = view.findViewById(R.id.textView);
+            textView.setText("No Classrooms Found!");
+            return view;
         } else {
-            view = convertView;
+            return getClassroomView(position);
         }
+    }
+
+    @NonNull
+    private View getClassroomView(int position) {
+        final LayoutInflater layoutInflater = LayoutInflater.from(activity);
+        final View view = layoutInflater.inflate(R.layout.classroom_deletion_layout, null);
 
         final Classroom classroom = classrooms.get(position);
 
@@ -82,7 +90,7 @@ public class LecturerClassroomsAdapter extends ArrayAdapter<Classroom> {
 
         final ClassroomRequest classroomRequest = ClassroomRequest.getDeleteRequest(listener, getContext());
         final DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
-            switch (which){
+            switch (which) {
                 case DialogInterface.BUTTON_POSITIVE:
                     try {
                         classroomRequest.execute(email, password, classroom.getClassroomName());
@@ -107,5 +115,13 @@ public class LecturerClassroomsAdapter extends ArrayAdapter<Classroom> {
         return view;
     }
 
-
+    @Override
+    public int getCount() {
+        // returns 1 if classrooms list is empty, because the "classrooms is empty" notification is shown.
+        if (classrooms.isEmpty()) {
+            return 1;
+        } else {
+            return super.getCount();
+        }
+    }
 }

@@ -107,6 +107,9 @@ public class ShowMessagesActivity extends AppCompatActivity {
         stringArrayAdapter.notifyDataSetChanged();
         // reverse the list so the message with the highest id is displayed as first element
         Collections.reverse(messages);
+        if (messages.isEmpty()) {
+            strings.add("No Messages found!");
+        }
         for (final Message message : messages) {
             final String s = message.getClassroom() + ": " + message.getPayload();
             if (StringFilter.filter(s, filter)) {

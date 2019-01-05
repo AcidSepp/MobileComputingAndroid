@@ -43,14 +43,22 @@ public class LecturerMessagesAdapter extends ArrayAdapter<Message> {
     @NonNull
     @Override
     public View getView(final int position, final View convertView, @NonNull final ViewGroup parent) {
-        View view;
-        if (convertView == null) {
+        if (messages.isEmpty()) {
             final LayoutInflater layoutInflater = LayoutInflater.from(activity);
-            view = layoutInflater.inflate(R.layout.classroom_deletion_layout, null);
+            final View view = layoutInflater.inflate(R.layout.classroom_list_empty_layout, null);
+            final TextView textView = view.findViewById(R.id.textView);
+            textView.setText("No Messages Found!");
+            return view;
         } else {
-            view = convertView;
+            return getMessageView(position);
         }
-        final Message message= messages.get(position);
+    }
+
+    @NonNull
+    private View getMessageView(int position) {
+        final LayoutInflater layoutInflater = LayoutInflater.from(activity);
+        final View view = layoutInflater.inflate(R.layout.classroom_deletion_layout, null);
+        final Message message = messages.get(position);
 
         final TextView textView = view.findViewById(R.id.textView);
         textView.setText(message.getPayload());
@@ -74,7 +82,7 @@ public class LecturerMessagesAdapter extends ArrayAdapter<Message> {
 
         final DeleteMessageRequest deleteRequest = DeleteMessageRequest.getRequest(listener, getContext());
         final DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
-            switch (which){
+            switch (which) {
                 case DialogInterface.BUTTON_POSITIVE:
                     try {
                         deleteRequest.execute(email, password, message.getId());
@@ -98,5 +106,15 @@ public class LecturerMessagesAdapter extends ArrayAdapter<Message> {
         });
 
         return view;
+    }
+
+    @Override
+    public int getCount() {
+        // returns 1 if the messages list is empty, because the empty notification is shown
+        if (messages.isEmpty()) {
+            return 1;
+        } else {
+            return super.getCount();
+        }
     }
 }

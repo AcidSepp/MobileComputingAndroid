@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Switch;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -33,18 +34,36 @@ public class StudentClassroomsAdapter extends ArrayAdapter<Classroom> {
     @NonNull
     @Override
     public View getView(final int position, final View convertView, @NonNull final ViewGroup parent) {
-        View view;
-        if (convertView == null) {
+        if (classrooms.isEmpty()) {
             final LayoutInflater layoutInflater = LayoutInflater.from(context);
-            view = layoutInflater.inflate(R.layout.subscription_toogle_layout, null);
+            final View view = layoutInflater.inflate(R.layout.classroom_list_empty_layout, null);
+            final TextView textView = view.findViewById(R.id.textView);
+            textView.setText("No Classrooms Found!");
+            return view;
         } else {
-            view = convertView;
+            return getClassroomView(position);
         }
+    }
+
+    @NonNull
+    private View getClassroomView(int position) {
+        final LayoutInflater layoutInflater = LayoutInflater.from(context);
+        final View view = layoutInflater.inflate(R.layout.subscription_toogle_layout, null);
         final Classroom classroom = classrooms.get(position);
         final Switch subscriptionSwitch = view.findViewById(R.id.subscribeSwitch);
         subscriptionSwitch.setChecked(classroom.isSubscribed());
         subscriptionSwitch.setText(classroom.getLecturer() + ": " + classroom.getClassroomName());
         subscriptionSwitch.setOnClickListener(new SubscriptionSwitchListener(classroom, email, password));
         return view;
+    }
+
+    @Override
+    public int getCount() {
+        // returns 1 if classrooms is empty, because the "No Classroms Found" Notification is shown.
+        if (classrooms.isEmpty()) {
+            return 1;
+        } else {
+            return super.getCount();
+        }
     }
 }
